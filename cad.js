@@ -11,7 +11,8 @@ let result, evaluator, wireframe;
 
 const params = {
   angle: 45,
-  distance: 5,
+  distance: 3,
+  visible: false,
   useGroups: true,
   wireframe: false,
 };
@@ -21,7 +22,7 @@ init();
 function init() {
   // environment
   camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 100 );
-  camera.position.set( 1, 1, 1 ).normalize().multiplyScalar( 10 );
+  camera.position.set( 6.86, 4.0, 9.75 );
 
   scene = new THREE.Scene();
 
@@ -29,12 +30,8 @@ function init() {
   const ambient = new THREE.HemisphereLight( 0xffffff, 0xbfd4d2, 3 );
   scene.add( ambient );
 
-  const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.3 );
-  directionalLight.position.set( 1, 4, 3 ).multiplyScalar( 3 );
-  directionalLight.castShadow = true;
-  directionalLight.shadow.mapSize.setScalar( 2048 );
-  directionalLight.shadow.bias = - 1e-4;
-  directionalLight.shadow.normalBias = 1e-4;
+  const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.4 );
+  directionalLight.position.set( 1, 4, 3 );
   scene.add( directionalLight );
 
   // renderer
@@ -63,24 +60,29 @@ function init() {
     } ),
   );
 
-  // TODO: Clone it with rotation
+  // TODO: Clone it with Y-rotation
   brush = new Brush(
-    new THREE.BoxGeometry( 10, 20, 20),
+    new THREE.BoxGeometry( 4, 15, 8),
     new THREE.MeshStandardMaterial( {
       color: 0x80cbc4,
-      polygonOffset: true,
-      polygonOffsetUnits: 1,
-      polygonOffsetFactor: 1,
     } ),
   );
 
-  brush.visible = true; // (?)
-  brush.position.x = 5;
-  brush.position.y = 5;
+	brush.material.transparent = true;
+	brush.material.depthWrite = false;
+	brush.material.side = THREE.DoubleSide;
+	brush.material.premultipliedAlpha = true;
+	brush.material.roughness = 0.25;
+	brush.material.color.set( 0x8888aa );
+  brush.material.needsUpdate = true;
 
-  // brush.rotation.x = Math.PI/4; 
-  // brush.rotation.y = Math.PI/4;
+  brush.position.x = 3;
+  brush.position.y = 5;
   brush.rotation.z = Math.PI/7;
+
+  brush.visible = true;
+
+	scene.add( brush );
 
   // create wireframe
   wireframe = new THREE.Mesh(
@@ -93,25 +95,26 @@ function init() {
   const controls = new OrbitControls( camera, renderer.domElement );
   controls.minDistance = 5;
   controls.maxDistance = 75;
+  controls.update();
 
   // set up gui
   const gui = new GUI();
   gui.add( params, 'angle', 0, 90, 1 ).name( 'Angle' );
-  gui.add( params, 'distance', 2, 7, 0.01 ).name( 'Distance' );
-  gui.add( params, 'wireframe' );
-  gui.add( params, 'useGroups' );
+  gui.add( params, 'distance', 0, 5, 0.01 ).name( 'Distance' );
+  gui.add( params, 'visible' ).name( 'Tool' );
+  gui.add( params, 'wireframe' ).name( 'Wireframe' );
 
-  // init helpers
+  // helpers
   initHelpers();
 
   window.addEventListener( 'resize', onWindowResize );
   onWindowResize();
 }
 
-// Init helpers
+// helpers
 function initHelpers() {
-  // Axis
-  let length = 4;
+  // axis
+  let length = 5;
   let headLength = length * 0.1;
   let headWidth = headLength * 0.2;
   let o = new THREE.Vector3(0,0,0);
@@ -126,7 +129,7 @@ function initHelpers() {
   scene.add( axisY );
   scene.add( axisZ );
 
-  // Grid
+  // grid
   /*
   const size = 5; 
   const divisions = 50; 
@@ -138,7 +141,6 @@ function initHelpers() {
   scene.add( gridXY );
   */
 }
-
 
 function updateCSG() {
   evaluator.useGroups = params.useGroups;
@@ -157,15 +159,16 @@ function onWindowResize() {
 }
 
 function animate() {
-  // brush.position.x = params.distance;
+
   brush.position.y = params.distance;
   brush.rotation.z = THREE.MathUtils.degToRad(params.angle);
-  // brush.rotation.y = Math.PI/4;
   brush.updateMatrixWorld();
   updateCSG();
 
   wireframe.geometry = result.geometry;
   wireframe.visible = params.wireframe;
+  brush.visible = params.visible;
+  brush.material.opacity = params.visible ? 0.35 : 1.0;
 
   renderer.render( scene, camera );
   stats.update();

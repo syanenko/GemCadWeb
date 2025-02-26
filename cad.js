@@ -10,7 +10,8 @@ let baseBrush, brush;
 let result, evaluator, wireframe;
 
 const params = {
-  distance: 5.5,
+  angle: 45,
+  distance: 5,
   useGroups: true,
   wireframe: false,
 };
@@ -64,7 +65,7 @@ function init() {
 
   // TODO: Clone it with rotation
   brush = new Brush(
-    new THREE.BoxGeometry( 10, 10, 10),
+    new THREE.BoxGeometry( 10, 20, 20),
     new THREE.MeshStandardMaterial( {
       color: 0x80cbc4,
       polygonOffset: true,
@@ -73,12 +74,13 @@ function init() {
     } ),
   );
 
+  brush.visible = true; // (?)
   brush.position.x = 5;
   brush.position.y = 5;
 
   // brush.rotation.x = Math.PI/4; 
   // brush.rotation.y = Math.PI/4;
-  brush.rotation.z = Math.PI/4;  
+  brush.rotation.z = Math.PI/7;
 
   // create wireframe
   wireframe = new THREE.Mesh(
@@ -94,7 +96,8 @@ function init() {
 
   // set up gui
   const gui = new GUI();
-  gui.add( params, 'distance', 3, 6, 0.01 ).name( 'Distance' );
+  gui.add( params, 'angle', 0, 90, 1 ).name( 'Angle' );
+  gui.add( params, 'distance', 2, 7, 0.01 ).name( 'Distance' );
   gui.add( params, 'wireframe' );
   gui.add( params, 'useGroups' );
 
@@ -154,8 +157,10 @@ function onWindowResize() {
 }
 
 function animate() {
-  brush.position.x = params.distance;
+  // brush.position.x = params.distance;
   brush.position.y = params.distance;
+  brush.rotation.z = THREE.MathUtils.degToRad(params.angle);
+  // brush.rotation.y = Math.PI/4;
   brush.updateMatrixWorld();
   updateCSG();
 

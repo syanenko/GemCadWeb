@@ -1,2 +1,2 @@
-# gemcad
- Gems designer
+# CSG demo for Gemcad
+ 

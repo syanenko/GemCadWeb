@@ -1,8 +1,8 @@
-## CSG demo for GemJS
+## _CSG demo for GemJS_
 
 Live: https://gemview.yesbird.online/cad.html
 
-Running locally:
+_Running locally:_
 1. Install node from https://nodejs.org/en/download
 2. Run:
 ```

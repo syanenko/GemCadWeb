@@ -1,0 +1,27 @@
+{
+  "name": "",
+  "version": "0.1.0",
+  "description": "Botanic garden territory model",
+  "main": "flora.js",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm run dev",
+    "dev": "servez --port 3000 --ssl"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/syanenko/flora.git"
+  },
+  "author": "Nemo",
+  "license": "ISC",
+  "dependencies": {
+    "lil-gui": "^0.19.2",
+    "three": "^0.173.0"
+  },
+  "devDependencies": {
+    "servez": "^2.1.3"
+  }
+}

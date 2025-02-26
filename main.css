@@ -1,0 +1,216 @@
+html, body {
+	margin: 0;
+	background-image: linear-gradient(rgb(0, 0, 0), rgb(88, 88, 88));
+  height: 100%;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+	background-color: #000;
+	color: #fff;
+  font-family: Monospace;
+	font-size: 13px;
+	line-height: 24px;
+	overscroll-behavior: none;
+  overflow: hidden;
+}
+
+a {
+	color: #ff0;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a, button, input, select {
+	pointer-events: auto;
+}
+
+@media all and ( max-width: 640px ) {
+	.lil-gui.root { 
+		right: auto;
+		top: auto;
+		max-height: 50%;
+		max-width: 80%;
+		bottom: 0;
+		left: 0;
+	}
+}
+/*
+#model_name {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  color:rgba(255, 255, 255, 0.5);
+  margin: 10px;
+  font-size: 160%;
+}
+*/
+
+#video_button {
+  position:absolute;
+  right:15px;
+  bottom:74px;
+  opacity:0.5
+}
+
+#upload_button {
+  position:absolute;
+  right:17px;
+  bottom:130px;
+  opacity:0.5
+}
+
+#VRButtonIcon {
+  position: absolute;
+  right:10px;
+  bottom: 10px;
+}
+
+.lil-gui {
+  --background-color:rgba(44, 44, 44, 1.0);
+  --title-background-color:rgba(44, 44, 44, 1.0);
+  --widget-color: rgba(75, 75, 75, 1.0);
+  --number-color: #ff9127;
+  --title-text-color: #ff9127;
+  --text-color: rgb(190, 190, 190);
+  --name-width: 20%;
+  --widget-height: 24px;
+  --slider-knob-width: 5px;
+  --slider-input-width: 60px;
+  --slider-input-min-width: 60x;
+  --font-size: 16px;
+  --input-font-size: 16px;
+  --font-family: Monospace;
+  z-index: 3 !important;
+  /*transform:translate(-531px, 0);*/
+}
+
+#about
+{
+  width: 400px;
+
+  -moz-box-shadow: 5px 5px 7px #535353;
+  -webkit-box-shadow: 5px 5px 7px #535353;
+  box-shadow: 5px 5px 7px #535353;
+
+  -moz-border-radius: 8px 8px 8px 8px;
+  -webkit-border-radius: 8px;
+  border-radius: 8px 8px 8px 8px;
+
+  border-width: 0px;
+  font-size: 16px;
+  color:rgba(255, 255, 255, 0.8);
+  background-color:rgba(75, 75, 75, 0.8);
+
+  padding: 20px;
+  padding-top: 30px;
+  padding-left: 40px;
+}
+
+#form_upload {
+  position: absolute;
+  top: calc(50vh - 200px);
+  left: calc(50vw - 100px); 
+  border-radius: 4px;
+  color: #ff9127;
+  background-color:rgba(75, 75, 75, 0.7);
+  font-size: 16px;
+  padding: 30px;
+  padding-top: 20px;
+  padding-left: 40px;
+  visibility: hidden;
+  z-index: 999;
+}
+
+#logo {
+  position: relative;
+  top: 14px;
+  left: 14px; 
+	padding-right: 8px;
+
+  font-size: 28px;
+  font-style: italic;
+
+  color: #ff9127;
+  z-index: 2;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+#studio {
+  position: relative;
+  top: 14px;
+  left: 10px;
+  font-size: 16px;
+  font-style: italic;
+  font-weight: bold;
+  z-index: 2;
+  color: #ff9127;
+}
+
+#line {
+  position: relative;
+  top: 14px;
+  z-index: 2;
+}
+
+.icon {
+  position: relative;
+  margin-left: 4px;
+  margin-top: 4px;
+  border: 1px solid #aaaaaa;
+  border-radius: 6px;
+
+  z-index: 2;
+}
+
+.label {
+  color: #ff9127;
+}
+
+#surname {
+  position: absolute;
+  top: 14px;
+  left:160px;
+  color:rgba(255, 255, 255, 0.5);
+  font-size: 26px;
+  font-style: italic;
+  /*display: none;*/
+}
+
+.info {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  color:rgba(255, 255, 255, 0.5);
+  margin: 10px;
+  font-size: 160%;
+  z-index:2;
+}
+
+.input {
+ width: 260px;
+ background-color: #000000;
+ color:rgba(255, 255, 255);
+ padding: 7px 10px;
+ border-radius: 4px;
+ border: 1px solid #aaaaaa;
+ margin-top: 6px;
+ font-size: 16px;
+}
+
+.control {
+ width: 58px;
+ margin: 1px;
+ background-color: #000000;
+ color: #ff9127; 
+ padding: 7px 10px;
+ border-radius: 4px;
+ border:2px solid #aaaaaa;
+ margin-top: 6px;
+ font-size: 16px;
+ cursor: pointer;
+ text-align: center;
+}

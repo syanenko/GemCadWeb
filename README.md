@@ -1,4 +1,4 @@
-## CSG demo for Gemcad
+## CSG demo for GemJS
 
 Live: https://gemview.yesbird.online/cad.html
 

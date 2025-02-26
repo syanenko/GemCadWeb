@@ -2,15 +2,15 @@ import * as THREE from 'three';
 import Stats from 'three/addons/libs/stats.module.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
-import { SUBTRACTION, Brush, Evaluator } from 'three-bvh-csg';
+import { SUBTRACTION, ADDITION, Brush, Evaluator } from 'three-bvh-csg';
 
 let stats;
 let camera, scene, renderer;
 let baseBrush, brush;
-let core;
 let result, evaluator, wireframe;
 
 const params = {
+  distance: 5.5,
   useGroups: true,
   wireframe: false,
 };
@@ -20,7 +20,7 @@ init();
 function init() {
   // environment
   camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 100 );
-  camera.position.set( - 1, 1, 1 ).normalize().multiplyScalar( 10 );
+  camera.position.set( 1, 1, 1 ).normalize().multiplyScalar( 10 );
 
   scene = new THREE.Scene();
 
@@ -62,16 +62,23 @@ function init() {
     } ),
   );
 
+  // TODO: Clone it with rotation
   brush = new Brush(
-    new THREE.CylinderGeometry( 1, 1, 5, 45 ),
+    new THREE.BoxGeometry( 10, 10, 10),
     new THREE.MeshStandardMaterial( {
       color: 0x80cbc4,
       polygonOffset: true,
       polygonOffsetUnits: 1,
       polygonOffsetFactor: 1,
-
     } ),
   );
+
+  brush.position.x = 5;
+  brush.position.y = 5;
+
+  // brush.rotation.x = Math.PI/4; 
+  // brush.rotation.y = Math.PI/4;
+  brush.rotation.z = Math.PI/4;  
 
   // create wireframe
   wireframe = new THREE.Mesh(
@@ -87,12 +94,48 @@ function init() {
 
   // set up gui
   const gui = new GUI();
+  gui.add( params, 'distance', 3, 6, 0.01 ).name( 'Distance' );
   gui.add( params, 'wireframe' );
   gui.add( params, 'useGroups' );
+
+  // init helpers
+  initHelpers();
 
   window.addEventListener( 'resize', onWindowResize );
   onWindowResize();
 }
+
+// Init helpers
+function initHelpers() {
+  // Axis
+  let length = 4;
+  let headLength = length * 0.1;
+  let headWidth = headLength * 0.2;
+  let o = new THREE.Vector3(0,0,0);
+  let x = new THREE.Vector3(1,0,0);
+  let y = new THREE.Vector3(0,1,0);
+  let z = new THREE.Vector3(0,0,1);
+
+  const axisX = new THREE.ArrowHelper(x, o, length, 'crimson', headLength, headWidth);
+  const axisY = new THREE.ArrowHelper(y, o, length * 0.9,'green', headLength, headWidth);
+  const axisZ = new THREE.ArrowHelper(z, o, length, 'royalblue', headLength, headWidth)
+  scene.add( axisX );
+  scene.add( axisY );
+  scene.add( axisZ );
+
+  // Grid
+  /*
+  const size = 5; 
+  const divisions = 50; 
+  const gridYZ = new THREE.GridHelper( size, divisions ).rotateZ(Math.PI/2);
+  const gridXZ = new THREE.GridHelper( size, divisions );
+  const gridXY = new THREE.GridHelper( size, divisions ).rotateX(Math.PI/2);
+  scene.add( gridYZ );
+  scene.add( gridXZ );
+  scene.add( gridXY );
+  */
+}
+
 
 function updateCSG() {
   evaluator.useGroups = params.useGroups;
@@ -111,6 +154,9 @@ function onWindowResize() {
 }
 
 function animate() {
+  brush.position.x = params.distance;
+  brush.position.y = params.distance;
+  brush.updateMatrixWorld();
   updateCSG();
 
   wireframe.geometry = result.geometry;
